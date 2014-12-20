@@ -375,19 +375,20 @@ QNetworkReply* QWebdav::list(const QString& path, int depth)
     props << "resourcetype";            // http://www.webdav.org/specs/rfc4918.html#PROPERTY_resourcetype
     // e.g. "collection" for a directory
 
+#ifdef QWEBDAVITEM_EXTENDED_PROPERTIES
     // Following properties are available as well.
-    //props << "creationdate";          // http://www.webdav.org/specs/rfc4918.html#PROPERTY_creationdate
+    props << "creationdate";          // http://www.webdav.org/specs/rfc4918.html#PROPERTY_creationdate
     // e.g. "1997-12-01T18:27:21-08:00"
-    //props << "displayname";           // http://www.webdav.org/specs/rfc4918.html#PROPERTY_displayname
+    props << "displayname";           // http://www.webdav.org/specs/rfc4918.html#PROPERTY_displayname
     // e.g. "Example HTML resource"
-    //props << "getcontentlanguage";    // http://www.webdav.org/specs/rfc4918.html#PROPERTY_getcontentlanguage
+    props << "getcontentlanguage";    // http://www.webdav.org/specs/rfc4918.html#PROPERTY_getcontentlanguage
     // e.g. "en-US"
-    //props << "getcontenttype";        // http://www.webdav.org/specs/rfc4918.html#PROPERTY_getcontenttype
+    props << "getcontenttype";        // http://www.webdav.org/specs/rfc4918.html#PROPERTY_getcontenttype
     // e.g "text/html"
-    //props << "getetag";               // http://www.webdav.org/specs/rfc4918.html#PROPERTY_getetag
+    props << "getetag";               // http://www.webdav.org/specs/rfc4918.html#PROPERTY_getetag
     // e.g. "zzyzx"
-
     // Additionally, there are also properties for locking
+#endif
 
     query["DAV:"] = props;
 
