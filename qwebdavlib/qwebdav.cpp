@@ -324,7 +324,7 @@ QNetworkReply* QWebdav::createRequest(const QString& method, QNetworkRequest& re
     }
 #endif
 
-#ifdef QT_VERSION >= 0x050000
+#if (QT_VERSION >= 0x050000)
     return sendCustomRequest(req, method.toLatin1(), outgoingData);
 #else
     return sendCustomRequest(req, method.toAscii(), outgoingData);
