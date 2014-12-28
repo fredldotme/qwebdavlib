@@ -6,6 +6,9 @@ QT       -= gui
 TARGET = qwebdav
 TEMPLATE = lib
 
+
+QMAKE_CXXFLAGS += -Wno-overloaded-virtual
+
 # Enable DEBUG output with qDebug()
 #DEFINES += DEBUG_WEBDAV
 
