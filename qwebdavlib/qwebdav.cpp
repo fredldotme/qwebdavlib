@@ -532,8 +532,9 @@ QNetworkReply* QWebdav::proppatch(const QString& path, const QWebdav::PropValues
     QByteArray query;
 
     query = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
-    query += "<D:proppatch xmlns:D=\"DAV:\" >";
-    query += "<D:prop>";
+    query += "<D:propertyupdate xmlns:D=\"DAV:\" >";
+    query += "<D:set xmlns:D=\"DAV:\">";
+    query += "<D:prop xmlns:D=\"DAV:\">";
     foreach (QString ns, props.keys())
     {
         QMap < QString , QVariant >::const_iterator i;
@@ -551,7 +552,8 @@ QNetworkReply* QWebdav::proppatch(const QString& path, const QWebdav::PropValues
         }
     }
     query += "</D:prop>";
-    query += "</D:propfind>";
+    query += "</D:set>";
+    query += "</D:propertyupdate>";
 
     return proppatch(path, query);
 }
