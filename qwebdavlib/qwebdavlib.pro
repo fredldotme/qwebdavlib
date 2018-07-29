@@ -6,6 +6,10 @@ QT       -= gui
 TARGET = qwebdav
 TEMPLATE = lib
 
+contains(CONFIG, RELEASE) {
+    QMAKE_POST_LINK=$(STRIP) $(TARGET)
+    DEFINES += QT_NO_DEBUG
+}
 
 QMAKE_CXXFLAGS += -Wno-overloaded-virtual
 
