@@ -65,6 +65,7 @@ QWebdavItem::QWebdavItem() :
    ,m_createdAtStr()
    ,m_contentLanguage()
    ,m_entityTag()
+   ,m_fileId()
    ,m_mimeType()
    ,m_isExecutable(false)
    ,m_source()
@@ -88,6 +89,7 @@ QWebdavItem::QWebdavItem(const QString &path, const QString &name,
   ,m_createdAtStr()
   ,m_contentLanguage()
   ,m_entityTag()
+  ,m_fileId()
   ,m_mimeType()
   ,m_isExecutable(false)
   ,m_source()
@@ -101,8 +103,8 @@ QWebdavItem::QWebdavItem(const QString &path, const QString &name,
             const QDateTime &lastModified, quint64 size,
             const QString &displayName, const QDateTime &createdAt,
             const QString &contentLanguage, const QString &entityTag,
-            const QString &mimeType, bool isExecutable,
-            const QString &source) :
+            const QString &fileId, const QString &mimeType,
+            bool isExecutable, const QString &source) :
     m_dirOrFile(dirOrFile)
    ,m_path(path)
    ,m_name(name)
@@ -115,6 +117,7 @@ QWebdavItem::QWebdavItem(const QString &path, const QString &name,
    ,m_createdAtStr(createdAt.toString("yyyy-MM-dd hh:mm")) // ISO format
    ,m_contentLanguage(contentLanguage)
    ,m_entityTag(entityTag)
+   ,m_fileId(fileId)
    ,m_mimeType(mimeType)
    ,m_isExecutable(isExecutable)
    ,m_source(source)
@@ -180,6 +183,11 @@ QString QWebdavItem::contentLanguage() const
 QString QWebdavItem::entityTag() const
 {
     return m_entityTag;
+}
+
+QString QWebdavItem::fileId() const
+{
+    return m_fileId;
 }
 
 QString QWebdavItem::mimeType() const

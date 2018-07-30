@@ -70,8 +70,8 @@ public:
                 const QDateTime &lastModified, quint64 size,
                 const QString &displayName, const QDateTime &createdAt,
                 const QString &contentLanguage, const QString &entityTag,
-                const QString &mimeType, bool isExecutable,
-                const QString &source);
+                const QString &fileId, const QString &mimeType,
+                bool isExecutable, const QString &source);
 #endif
 
     bool isDir() const;
@@ -88,6 +88,7 @@ public:
     QString createdAtStr() const;
     QString contentLanguage() const;
     QString entityTag() const;
+    QString fileId() const;
     QString mimeType() const;
     bool isExecutable() const;
     QString source() const;
@@ -110,6 +111,7 @@ protected:
     QString m_createdAtStr;
     QString m_contentLanguage;
     QString m_entityTag;
+    QString m_fileId;
     QString m_mimeType;
     bool m_isExecutable;
     QString m_source;

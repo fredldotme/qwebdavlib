@@ -390,6 +390,12 @@ QNetworkReply* QWebdav::list(const QString& path, int depth)
     // Additionally, there are also properties for locking
 #endif
 
+    QStringList cloudProperties;
+    cloudProperties << "fileid";      // https://doc.owncloud.org/server/10.0/user_manual/files/access_webdav.html
+    // e.g. "zzyzx"
+
+    query["http://owncloud.org/ns"] = cloudProperties;
+
     query["DAV:"] = props;
 
     return propfind(path, query, depth);
@@ -520,6 +526,9 @@ QNetworkReply* QWebdav::propfind(const QString& path, const QByteArray& query, i
 
     QUrl reqUrl(m_baseUrl);
     reqUrl.setPath(absolutePath(path));
+
+    qDebug() << "propfind query:";
+    qDebug() << query;
 
     req.setUrl(reqUrl);
     req.setRawHeader("Depth", depth == 2 ? QString("infinity").toUtf8() : QString::number(depth).toUtf8());

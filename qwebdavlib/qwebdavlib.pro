@@ -37,3 +37,5 @@ OTHER_FILES += \
     CHANGES \
     LICENSE \
     README
+
+INSTALLS += target

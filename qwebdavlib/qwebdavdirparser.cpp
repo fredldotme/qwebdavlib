@@ -368,6 +368,7 @@ void QWebdavDirParser::davParsePropstats(const QString &path, const QDomNodeList
     QDateTime createdAt;
     QString contentLanguage;
     QString entityTag;
+    QString fileId;
     QString mimeType;
     bool isExecutable;
     QString source;
@@ -414,11 +415,6 @@ void QWebdavDirParser::davParsePropstats(const QString &path, const QDomNodeList
             if (property.isNull())
                 continue;
 
-            if ( property.namespaceURI() != "DAV:" ) {
-                // parse only DAV namespace properties
-                continue;
-            }
-
             if ( property.tagName() == "getcontentlength" )
                 size = property.text().toULongLong();
             else if ( property.tagName() == "getlastmodified" )
@@ -457,7 +453,13 @@ void QWebdavDirParser::davParsePropstats(const QString &path, const QDomNodeList
                         isExecutable = true;
                 }
                 else if ( property.tagName() == "getetag" )
+                {
                     entityTag = property.text();
+                }
+                else if ( property.tagName() == "fileid" )
+                {
+                    fileId = property.text();
+                }
 #endif
 #ifdef DEBUG_WEBDAV
                 else
@@ -488,8 +490,8 @@ void QWebdavDirParser::davParsePropstats(const QString &path, const QDomNodeList
                                  lastModified, size,
                                  displayName, createdAt,
                                  contentLanguage, entityTag,
-                                 mimeType, isExecutable,
-                                 source));
+                                 fileId, mimeType,
+                                 isExecutable, source));
 #else
     m_dirList.append(QWebdavItem(path_, name,
                                  ext, dirOrFile,
