@@ -460,6 +460,10 @@ void QWebdavDirParser::davParsePropstats(const QString &path, const QDomNodeList
                 {
                     fileId = property.text();
                 }
+                else if ( property.tagName() == "size" )
+                {
+                    size = property.text().toULongLong();
+                }
 #endif
 #ifdef DEBUG_WEBDAV
                 else

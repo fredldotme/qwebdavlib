@@ -392,6 +392,7 @@ QNetworkReply* QWebdav::list(const QString& path, int depth)
 
     QStringList cloudProperties;
     cloudProperties << "fileid";      // https://doc.owncloud.org/server/10.0/user_manual/files/access_webdav.html
+    cloudProperties << "size";        // https://github.com/owncloud/core/issues/21650#issuecomment-170908629
     // e.g. "zzyzx"
 
     query["http://owncloud.org/ns"] = cloudProperties;
