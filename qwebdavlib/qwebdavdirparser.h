@@ -84,6 +84,8 @@ public:
     bool isBusy() const;
     bool isFinished() const;
     QString path() const;
+    QNetworkReply::NetworkError error() const;
+    int httpCode() const;
 
 signals:
     void finished();
@@ -106,6 +108,8 @@ protected:
 
 private:
     QScopedPointer<QMutex> m_mutex;
+    QNetworkReply::NetworkError m_error;
+    int m_httpCode;
     QWebdav *m_webdav;
     QNetworkReply *m_reply;
     QList<QWebdavItem> m_dirList;

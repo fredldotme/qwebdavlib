@@ -51,6 +51,8 @@
 #include "qwebdavdirparser.h"
 
 QWebdavDirParser::QWebdavDirParser(QObject *parent) : QObject(parent)
+  ,m_error(QNetworkReply::NoError)
+  ,m_httpCode(0)
   ,m_webdav(0)
   ,m_reply(0)
   ,m_path()
@@ -87,6 +89,8 @@ bool QWebdavDirParser::listDirectory(QWebdav *pWebdav, const QString &path)
         return false;
 
     m_webdav = pWebdav;
+    m_error = QNetworkReply::NoError;
+    m_httpCode = 0;
     m_path = path;
     m_busy = true;
     m_abort = false;
@@ -116,6 +120,8 @@ bool QWebdavDirParser::listItem(QWebdav *pWebdav, const QString &path)
         return false;
 
     m_webdav = pWebdav;
+    m_error = QNetworkReply::NoError;
+    m_httpCode = 0;
     m_path = path;
     m_busy = true;
     m_includeRequestedURI = true;
@@ -169,6 +175,16 @@ QString QWebdavDirParser::path() const
     return m_path;
 }
 
+QNetworkReply::NetworkError QWebdavDirParser::error() const
+{
+    return m_error;
+}
+
+int QWebdavDirParser::httpCode() const
+{
+    return m_httpCode;
+}
+
 void QWebdavDirParser::abort()
 {
     m_abort = true;
@@ -176,6 +192,8 @@ void QWebdavDirParser::abort()
     if (m_reply!=0)
         m_reply->abort();
 
+    m_httpCode = 0;
+    m_error = QNetworkReply::NoError;
     m_reply = 0;
     m_busy = false;
 }
@@ -187,6 +205,9 @@ void QWebdavDirParser::replyFinished()
 #ifdef DEBUG_WEBDAV
     qDebug() << "QWebdavDirParser::replyFinished()";
 #endif
+
+    if (!reply)
+        return;
 
     if (m_reply!=reply) {
 #ifdef DEBUG_WEBDAV
@@ -202,6 +223,7 @@ void QWebdavDirParser::replyFinished()
     {
         QMutexLocker locker(m_mutex.data());
 
+        this->m_httpCode = this->m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         QString contentType = m_reply->header(QNetworkRequest::ContentTypeHeader).toString();
     #ifdef DEBUG_WEBDAV
         qDebug() << "   Reply finished. Content header:" << contentType;
@@ -209,6 +231,8 @@ void QWebdavDirParser::replyFinished()
         if ( (m_reply->error() != QNetworkReply::NoError) && (m_reply->error() != QNetworkReply::OperationCanceledError) ) {
             QString errStr = m_reply->errorString();
             errStr = errStr.right(errStr.size()-errStr.indexOf("server replied:")+1);
+            this->m_error = m_reply->error();
+
             emit errorChanged(errStr);
     #ifdef DEBUG_WEBDAV
             qDebug() << "   Reply has error. Error:" << m_reply->errorString() << "Code:" << m_reply->error();
@@ -251,6 +275,7 @@ void QWebdavDirParser::replyDeleteLater(QNetworkReply* reply)
 #endif
         reply->readAll();
         reply->close();
+        this->m_httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         QMetaObject::invokeMethod(this,"replyDeleteLater", Qt::QueuedConnection, Q_ARG(QNetworkReply*, reply));
         return;
     }
