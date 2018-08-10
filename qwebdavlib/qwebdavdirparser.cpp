@@ -275,10 +275,12 @@ void QWebdavDirParser::replyDeleteLater(QNetworkReply* reply)
 #endif
         reply->readAll();
         reply->close();
-        this->m_httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         QMetaObject::invokeMethod(this,"replyDeleteLater", Qt::QueuedConnection, Q_ARG(QNetworkReply*, reply));
         return;
     }
+
+    this->m_httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    this->m_error = reply->error();
 
     {
         //QMutexLocker locker(m_mutex.data());
