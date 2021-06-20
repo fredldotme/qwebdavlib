@@ -107,7 +107,7 @@ protected:
     QDateTime parseDateTime( const QString &input, const QString &type);
 
 private:
-    QScopedPointer<QMutex> m_mutex;
+    QScopedPointer<QRecursiveMutex> m_mutex;
     QNetworkReply::NetworkError m_error;
     int m_httpCode;
     QWebdav *m_webdav;

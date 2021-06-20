@@ -511,9 +511,9 @@ QNetworkReply* QWebdav::propfind(const QString& path, const QWebdav::PropNames& 
     {
         foreach (const QString key, props[ns])
             if (ns == "DAV:")
-                query += "<D:" + key + "/>";
+                query += "<D:" + key.toUtf8() + "/>";
             else
-                query += "<" + key + " xmlns=\"" + ns + "\"/>";
+                query += "<" + key.toUtf8() + " xmlns=\"" + ns.toUtf8() + "\"/>";
     }
     query += "</D:prop>";
     query += "</D:propfind>";
@@ -551,13 +551,13 @@ QNetworkReply* QWebdav::proppatch(const QString& path, const QWebdav::PropValues
 
         for (i = props[ns].constBegin(); i != props[ns].constEnd(); ++i) {
             if (ns == "DAV:") {
-                query += "<D:" + i.key() + ">";
-                query += i.value().toString();
-                query += "</D:" + i.key() + ">" ;
+                query += "<D:" + i.key().toUtf8() + ">";
+                query += i.value().toByteArray();
+                query += "</D:" + i.key().toUtf8() + ">" ;
             } else {
-                query += "<" + i.key() + " xmlns=\"" + ns + "\">";
-                query += i.value().toString();
-                query += "</" + i.key() + " xmlns=\"" + ns + "\"/>";
+                query += "<" + i.key().toUtf8() + " xmlns=\"" + ns.toUtf8() + "\">";
+                query += i.value().toByteArray();
+                query += "</" + i.key().toUtf8() + " xmlns=\"" + ns.toUtf8() + "\"/>";
             }
         }
     }
