@@ -6,32 +6,16 @@ QT       -= gui
 TARGET = qwebdav
 TEMPLATE = lib
 
-CONFIG(release, debug|release) {
-    QMAKE_POST_LINK=$(STRIP) $(TARGET)
-    DEFINES += QT_NO_DEBUG_OUTPUT
+!macx {
+    CONFIG(release, debug|release) {
+        QMAKE_POST_LINK=$(STRIP) $(TARGET)
+        DEFINES += QT_NO_DEBUG_OUTPUT
+    }
 }
 
 QMAKE_CXXFLAGS += -Wno-overloaded-virtual
 
-# Enable DEBUG output with qDebug()
-#DEFINES += DEBUG_WEBDAV
-
-# Enable extended WebDAV properties (see QWebDavItem.h/cpp)
-DEFINES += QWEBDAVITEM_EXTENDED_PROPERTIES
-
-# DO NOT REMOVE - REQUIRED BY qwebdav_global.h
-DEFINES += QWEBDAV_LIBRARY
-
-SOURCES += qwebdav.cpp \
-    qwebdavitem.cpp \
-    qwebdavdirparser.cpp \
-    qnaturalsort.cpp
-
-HEADERS += qwebdav.h \
-    qwebdavitem.h \
-    qwebdavdirparser.h \
-    qnaturalsort.h \
-    qwebdav_global.h
+include(qwebdavlib.pri)
 
 OTHER_FILES += \
     CHANGES \
