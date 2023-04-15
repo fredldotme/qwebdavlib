@@ -64,6 +64,12 @@
 #include "qwebdav.h"
 #include "qwebdavitem.h"
 
+#if QT_VERSION < 0x051400
+#define RECURSIVE_MUTEX QMutex 
+#else
+#define RECURSIVE_MUTEX QRecursiveMutex
+#endif
+
 class QWEBDAVSHARED_EXPORT QWebdavDirParser : public QObject
 {
     Q_OBJECT
@@ -107,7 +113,7 @@ protected:
     QDateTime parseDateTime( const QString &input, const QString &type);
 
 private:
-    QScopedPointer<QRecursiveMutex> m_mutex;
+    QScopedPointer<RECURSIVE_MUTEX> m_mutex;
     QNetworkReply::NetworkError m_error;
     int m_httpCode;
     QWebdav *m_webdav;
