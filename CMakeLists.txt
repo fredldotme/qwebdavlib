@@ -29,19 +29,26 @@ include(GenerateExportHeader)
 
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
+include(CMakePackageConfigHelpers)
 
 ### Find available Qt build types
 #
 #
 set(QT_NO_CREATE_VERSIONLESS_TARGETS ON)
-find_package(Qt6 6.5.0 CONFIG COMPONENTS Core Network Xml)
-find_package(Qt5 5.15.0 CONFIG COMPONENTS Core Network Xml)
+set(QT5_REQUIRED_VERSION 5.15.0)
+set(QT6_REQUIRED_VERSION 6.5.0)
+find_package(Qt6 ${QT6_REQUIRED_VERSION} CONFIG COMPONENTS Core Network Xml)
+find_package(Qt5 ${QT5_REQUIRED_VERSION} CONFIG COMPONENTS Core Network Xml)
 
+set(WITH_QT5 FALSE) # Used when creating the Config.cmake file
+set(WITH_QT6 FALSE)
 if(TARGET Qt5::Core)
   message(STATUS "Building Qt5 version of ${PROJECT_NAME}")
+  set(WITH_QT5 TRUE)
 endif()
 if(TARGET Qt6::Core)
   message(STATUS "Building Qt6 version of ${PROJECT_NAME}")
+  set(WITH_QT6 TRUE)
 endif()
 if(NOT TARGET Qt5::Core AND NOT TARGET Qt6::Core)
   # If neither is found, complain about Qt5 because then the
@@ -63,10 +70,37 @@ ecm_setup_version(${PROJECT_VERSION}
   PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/QWebdavConfigVersion.cmake"
   SOVERSION 1
 )
+install(
+  FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/qwebdav_version.h"
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QWebdav
+  COMPONENT devel
+)
 
 ### Build
 #
 #
 add_subdirectory(qwebdavlib)
+
+### CMake Configuration Files
+#
+#
+configure_package_config_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/QWebdavConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/QWebdavConfig.cmake"
+  INSTALL_DESTINATION ${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav
+)
+install(
+  FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/QWebdavConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/QWebdavConfigVersion.cmake"
+  DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav"
+  COMPONENT devel
+)
+install(
+  EXPORT QWebdavTargets
+  DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav"
+  FILE QWebdavTargets.cmake
+)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

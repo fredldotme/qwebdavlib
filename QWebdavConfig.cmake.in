@@ -1,0 +1,29 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+set(_qwebdav_WITH_QT5 @WITH_QT5@)
+set(_qwebdav_WITH_QT6 @WITH_QT6@)
+
+set(QT_NO_CREATE_VERSIONLESS_TARGETS ON)
+
+if(_qwebdav_WITH_QT5)
+  find_dependency(Qt5Core @QT5_REQUIRED_VERSION@)
+  find_dependency(Qt5Network @QT5_REQUIRED_VERSION@)
+  find_dependency(Qt5Xml @QT5_REQUIRED_VERSION@)
+endif()
+
+if(_qwebdav_WITH_QT6)
+  find_dependency(Qt6Core @QT6_REQUIRED_VERSION@)
+  find_dependency(Qt6Network @QT6_REQUIRED_VERSION@)
+  find_dependency(Qt6Xml @QT6_REQUIRED_VERSION@)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/QWebdavTargets.cmake")
+
+# Versionless alias, prefer Qt6 over Qt5
+if(_qwebdav_WITH_QT6)
+  add_library(QWebdav ALIAS QWebdav-qt6)
+else()
+  add_library(QWebdav ALIAS QWebdav-qt5)
+endif()
