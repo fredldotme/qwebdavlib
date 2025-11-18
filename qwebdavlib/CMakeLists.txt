@@ -37,12 +37,44 @@ function(add_qwebdav_library QT_VERSION)
       Qt${QT_VERSION}::Network
       Qt${QT_VERSION}::Xml
   )
+
+  set_target_properties(QWebdav-qt${QT_VERSION}
+    PROPERTIES
+      VERSION ${QWebdav_VERSION}
+      SOVERSION ${QWebdav_SOVERSION}
+      EXPORT_NAME "QWebdav-qt${QT_VERSION}"
+  )
+
+  install(
+    TARGETS QWebdav-qt${QT_VERSION}
+    EXPORT QWebdavTargets
+    ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
+  )
 endfunction()
 
 if(TARGET Qt5::Core)
   add_qwebdav_library(5)
+  add_library(QWebdav ALIAS QWebdav-qt5)
 endif()
 if(TARGET Qt6::Core)
   add_qwebdav_library(6)
+  if(NOT TARGET QWebdav)
+    add_library(QWebdav ALIAS QWebdav-qt6)
+  endif()
 endif()
 
+# Only one export header, regardless of which libraries are built
+generate_export_header(QWebdav)
+
+# Only one copy of the headers, regardless of which libraries are built
+install(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/qwebdav_export.h
+    qnaturalsort.h
+    qwebdav.h
+    qwebdav_global.h
+    qwebdavdirparser.h
+    qwebdavitem.h
+  DESTINATION ${KDE_INSTALL_INCLUDEDIR}/QWebdav
+  COMPONENT devel
+)
