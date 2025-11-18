@@ -1,39 +1,48 @@
-# Generated from qwebdavlib.pro.
+# Boilerplate for building the library against a given Qt version
+function(add_qwebdav_library QT_VERSION)
+  add_library(QWebdav-qt${QT_VERSION})
+  target_sources(QWebdav-qt${QT_VERSION}
+    PRIVATE
+      qnaturalsort.cpp
+      qwebdav.cpp
+      qwebdavdirparser.cpp
+      qwebdavitem.cpp
+  )
 
-#####################################################################
-## qwebdav Generic Library:
-#####################################################################
+  target_compile_definitions(QWebdav-qt${QT_VERSION}
+    PRIVATE
+      QWEBDAV_LIBRARY=1
+      QWEBDAVITEM_EXTENDED_PROPERTIES=1
+  )
+  if(CMAKE_BUILD_TYPE STREQUAL Release)
+    target_compile_definitions(QWebdav-qt${QT_VERSION}
+      PRIVATE
+        QT_NO_DEBUG_OUTPUT=1
+    )
+  endif()
 
-qt_internal_add_cmake_library(qwebdav
-    SOURCES
-        qnaturalsort.cpp qnaturalsort.h
-        qwebdav.cpp qwebdav.h
-        qwebdav_global.h
-        qwebdavdirparser.cpp qwebdavdirparser.h
-        qwebdavitem.cpp qwebdavitem.h
-    DEFINES
-        QWEBDAVITEM_EXTENDED_PROPERTIES
-        QWEBDAV_LIBRARY
-    PUBLIC_LIBRARIES
-        Qt::Core
-        Qt::Network
-        Qt::Xml
-    COMPILE_OPTIONS
-        -Wno-overloaded-virtual
-)
+  target_compile_options(QWebdav-qt${QT_VERSION}
+    PRIVATE
+      -Wno-overloaded-virtual
+  )
 
-#### Keys ignored in scope 1:.:.:qwebdavlib.pro:<TRUE>:
-# INSTALLS = "target"
-# OTHER_FILES = "CHANGES" "LICENSE" "README"
-# TEMPLATE = "lib"
+  target_include_directories(QWebdav-qt${QT_VERSION}
+    INTERFACE
+      "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR}/QWebdav>"
+  )
 
-## Scopes:
-#####################################################################
+  target_link_libraries(QWebdav-qt${QT_VERSION}
+    PUBLIC
+      Qt${QT_VERSION}::Core
+      Qt${QT_VERSION}::Network
+      Qt${QT_VERSION}::Xml
+  )
+endfunction()
 
-qt_internal_extend_target(qwebdav CONDITION CMAKE_BUILD_TYPE STREQUAL Release
-    DEFINES
-        QT_NO_DEBUG_OUTPUT
-)
+if(TARGET Qt5::Core)
+  add_qwebdav_library(5)
+endif()
+if(TARGET Qt6::Core)
+  add_qwebdav_library(6)
+endif()
 
-#### Keys ignored in scope 2:.:.:qwebdavlib.pro:(CMAKE_BUILD_TYPE STREQUAL Release):
-# QMAKE_POST_LINK = "$(STRIP)" "$(TARGET)"
