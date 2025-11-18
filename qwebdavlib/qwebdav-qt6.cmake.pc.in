@@ -1,0 +1,12 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=@CMAKE_INSTALL_PREFIX@/@KDE_INSTALL_LIBDIR@
+includedir=${prefix}/include/QWebdav
+
+Name: libqwebdav-qt6
+Description: Qt WebDAV library
+Version: $$VERSION
+Libs: -L${libdir} -lQWebdav-qt6
+Requires: Qt6Core Qt6Network Qt6Xml
+Cflags: -I${includedir}
+

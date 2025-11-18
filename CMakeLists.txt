@@ -103,4 +103,34 @@ install(
   FILE QWebdavTargets.cmake
 )
 
+### PackageConfig files
+#
+# These are slightly different from the qmake-produced
+# ones because the naming of the library is different
+# and the installation-directories are, also.
+if(WITH_QT5)
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/qwebdavlib/qwebdav-qt5.cmake.pc.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwebdav-qt5.pc"
+    @ONLY
+  )
+  install(
+    FILES
+      "${CMAKE_CURRENT_BINARY_DIR}/qwebdav-qt5.pc"
+    DESTINATION ${KDE_INSTALL_LIBDIR}/pkgconfig
+    )
+endif()
+if(WITH_QT6)
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/qwebdavlib/qwebdav-qt6.cmake.pc.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwebdav-qt6.pc"
+    @ONLY
+  )
+  install(
+    FILES
+      "${CMAKE_CURRENT_BINARY_DIR}/qwebdav-qt6.pc"
+    DESTINATION ${KDE_INSTALL_LIBDIR}/pkgconfig
+    )
+endif()
+
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
