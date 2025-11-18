@@ -28,15 +28,22 @@ Tested WebDAV server:
     * SabreDAV - WebDAV framework for PHP
         SabreDAV 1.6.1-stable, https://sabre.io/dav/
 
-QWebdav Library supports the following authentication methods:
-(as provided by Qt4)
+QWebdav Library supports the following authentication methods,
+depending on the Qt version it is built with:
 
-    * Basic
+    * Basic (Qt4, Qt5, Qt6)
         https://en.wikipedia.org/wiki/Basic_access_authentication
-    * NTLM version 1 (older Windows challenge-response authentication)
+    * NTLM version 1 (older Windows challenge-response authentication) (Qt4)
         https://en.wikipedia.org/wiki/NTLM
-    * Digest-MD5
+    * NTLM version 2 (Qt5, Qt6)
+        https://en.wikipedia.org/wiki/NTLM#NTLMv2
+    * Digest-MD5 (Qt4, Qt5, Qt6)
         https://en.wikipedia.org/wiki/Digest_access_authentication
+    * SPNEGO (Qt5, Qt6)
+        https://en.wikipedia.org/wiki/SPNEGO
 
-    More information on authentication by Qt4
-        http://qt-project.org/doc/qt-4.7/qauthenticator.html
+More information on authentication:
+    * Qt5
+        https://doc.qt.io/archives/qt-5.15/qauthenticator.html
+    * Qt6
+        https://doc.qt.io/qt-6/qauthenticator.html
