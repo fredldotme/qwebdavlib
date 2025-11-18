@@ -309,7 +309,11 @@ void QWebdavDirParser::parseMultiResponse(const QByteArray &data)
         return;
 
     QDomDocument multiResponse;
-    multiResponse.setContent(data, true);
+#if QT_VERSION < 0x060800
+    multiResponse.setContent(data, true /* with namespace processing */);
+#else
+    multiResponse.setContent(data, QDomDocument::ParseOption::UseNamespaceProcessing);
+#endif
 
     for(QDomNode n = multiResponse.documentElement().firstChild(); !n.isNull(); n = n.nextSibling())
     {
