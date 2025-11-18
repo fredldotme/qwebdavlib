@@ -408,7 +408,7 @@ void QWebdavDirParser::davParsePropstats(const QString &path, const QDomNodeList
 #endif
 
     // name
-#if QT_VERSION < 0x060000
+#if QT_VERSION < 0x050e00
     QStringList pathElements = path_.split('/', QString::SkipEmptyParts);
 #else
     QStringList pathElements = path_.split('/', Qt::SkipEmptyParts);
