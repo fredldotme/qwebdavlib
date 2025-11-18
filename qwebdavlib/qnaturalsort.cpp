@@ -67,7 +67,7 @@ static inline QChar getNextChar(const QString &s, int location)
   */
 int QNaturalSort::naturalCompare(const QString &s1, const QString &s2,  Qt::CaseSensitivity cs)
 {
-    for (int l1 = 0, l2 = 0; l1 <= s1.count() && l2 <= s2.count(); ++l1, ++l2) {
+    for (int l1 = 0, l2 = 0; l1 <= s1.size() && l2 <= s2.size(); ++l1, ++l2) {
         // skip spaces, tabs and 0's
         QChar c1 = getNextChar(s1, l1);
         while (c1.isSpace())
