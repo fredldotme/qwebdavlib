@@ -5,7 +5,7 @@ includedir=${prefix}/include/QWebdav
 
 Name: libqwebdav-qt6
 Description: Qt WebDAV library
-Version: $$VERSION
+Version: @QWebdav_VERSION@
 Libs: -L${libdir} -lqwebdav-qt6
 Requires: Qt6Core Qt6Network Qt6Xml
 Cflags: -I${includedir}
