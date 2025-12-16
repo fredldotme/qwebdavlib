@@ -47,3 +47,34 @@ More information on authentication:
         https://doc.qt.io/archives/qt-5.15/qauthenticator.html
     * Qt6
         https://doc.qt.io/qt-6/qauthenticator.html
+
+
+## Building QWebDAV
+
+The library can be built with your choice of meta-buildsystem:
+CMake or qmake. There are minor differences in the resulting
+installed files:
+- CMake build installs only one copy of the headers, and installs
+  both CMake and pkgconfig files for finding the library.
+  The SOVERSION is 1, which can be linked as .so, .so.1 and .so.1.0.0.
+- qmake build installs one copy of the headers per Qt version and
+  installs only pkgconfig files. The SOVERSION is 1, which can
+  be linked as .so, .so.1, .so.1.0 and .so.1.0.0.
+
+An example program is also built, but not installed.
+
+## Using QWebDAV from your Project
+
+If your project uses CMake as a meta-buildsystem, the `qwebdavlibExample/`
+directory contains an example of how to do so. Use `find_package(QWebdav)`
+as shown in the example. You can also use CMake's `pkgconfig` support,
+also shown in the example. If your project uses another buildsystem,
+use `pkgconfig` to find QWebDAV.
+
+To use this example as an independent build, run
+```
+cmake -S qwebdavlibExample -B build-example
+make -C build-example
+```
+(optionally, use a different `-B` build directory, or a different
+build-system generator like `-G Ninja`)

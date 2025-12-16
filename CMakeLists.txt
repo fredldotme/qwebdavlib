@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25.0 FATAL_ERROR)
 
 project(QWebdav
-  VERSION 1.0
+  VERSION 1.0.0
   DESCRIPTION "WebDAV server access"
   HOMEPAGE_URL "https://github.com/fredldotme/qwebdavlib"
   LANGUAGES CXX
@@ -81,6 +81,7 @@ install(
 #
 #
 add_subdirectory(qwebdavlib)
+add_subdirectory(qwebdavlibExample)
 
 ### CMake Configuration Files
 #
