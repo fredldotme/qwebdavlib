@@ -12,7 +12,11 @@ project(QWebdavExample
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(QWebdav REQUIRED)
+# If we're building as part of the QWebdav repository, we already
+# have the targets available.
+if(NOT TARGET QWebdav)
+  find_package(QWebdav REQUIRED)
+endif()
 
 add_executable(QWebdavExample)
 target_sources(QWebdavExample

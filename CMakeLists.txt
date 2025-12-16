@@ -81,6 +81,7 @@ install(
 #
 #
 add_subdirectory(qwebdavlib)
+add_subdirectory(qwebdavlibExample)
 
 ### CMake Configuration Files
 #
