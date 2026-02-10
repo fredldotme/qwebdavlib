@@ -13,8 +13,15 @@ project(QWebdavExample
 set(CMAKE_AUTOMOC ON)
 
 # If we're building as part of the QWebDAV top-level build, we already
-# have the target QWebdav available. In that case, do only the CMake-
-# based build.
+# have a QWebdav target available -- prefer Qt6, and give it an alias.
+
+if(TARGET qwebdav-qt6)
+  add_library(QWebdav ALIAS qwebdav-qt6)
+elseif(TARGET qwebdav-qt5)
+  add_library(QWebdav ALIAS qwebdav-qt5)
+endif()
+
+# If we have a QWebdav target, do only the CMake-based build.
 if(NOT TARGET QWebdav)
   # Outside of the QWebDAV top-level build, demonstrate both
   # CMake and pkgconfig approaches.
