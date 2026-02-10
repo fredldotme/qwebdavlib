@@ -7,6 +7,11 @@ project(QWebdav
   LANGUAGES CXX
 )
 
+# By default, look for and support both versions of Qt, but they
+# can be individually turned off with e.g. -DENABLE_QT5=OFF
+option(ENABLE_QT5 "Search for Qt5 libraries and build ${PROJECT_NAME} for Qt5 if found" ON)
+option(ENABLE_QT6 "Search for Qt6 libraries and build ${PROJECT_NAME} for Qt6 if found" ON)
+
 ### Find ECM up-front and complain otherwise
 #
 #
@@ -37,8 +42,12 @@ include(CMakePackageConfigHelpers)
 set(QT_NO_CREATE_VERSIONLESS_TARGETS ON)
 set(QT5_REQUIRED_VERSION 5.15.0)
 set(QT6_REQUIRED_VERSION 6.5.0)
-find_package(Qt6 ${QT6_REQUIRED_VERSION} CONFIG COMPONENTS Core Network Xml)
-find_package(Qt5 ${QT5_REQUIRED_VERSION} CONFIG COMPONENTS Core Network Xml)
+if(ENABLE_QT6)
+  find_package(Qt6 ${QT6_REQUIRED_VERSION} CONFIG COMPONENTS Core Network Xml)
+endif()
+if(ENABLE_QT5)
+  find_package(Qt5 ${QT5_REQUIRED_VERSION} CONFIG COMPONENTS Core Network Xml)
+endif()
 
 set(WITH_QT5 FALSE) # Used when creating the Config.cmake file
 set(WITH_QT6 FALSE)
@@ -46,9 +55,15 @@ if(TARGET Qt5::Core)
   message(STATUS "Building Qt5 version of ${PROJECT_NAME}")
   set(WITH_QT5 TRUE)
 endif()
+if(ENABLE_QT5 AND NOT TARGET Qt5::Core)
+  message(STATUS "Qt5 enabled but not found.")
+endif()
 if(TARGET Qt6::Core)
   message(STATUS "Building Qt6 version of ${PROJECT_NAME}")
   set(WITH_QT6 TRUE)
+endif()
+if(ENABLE_QT6 AND NOT TARGET Qt6::Core)
+  message(STATUS "Qt5 enabled but not found.")
 endif()
 if(NOT TARGET Qt5::Core AND NOT TARGET Qt6::Core)
   # If neither is found, complain about Qt5 because then the
