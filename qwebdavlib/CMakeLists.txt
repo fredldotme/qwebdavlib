@@ -50,31 +50,32 @@ function(add_qwebdav_library QT_VERSION)
     EXPORT QWebdavTargets
     ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
   )
+
+  generate_export_header(qwebdav-qt${QT_VERSION})
+
+  # One copy of the headers per Qt-version, even though they are
+  # identical: this is so that you can build packages of Qt5 and Qt6
+  # libraries separately and they won't collide over the headers.
+  install(
+    FILES
+      # Generated export-header isn't used (qwebdav_global contains similar
+      # definitions) and the naturalsort header is for internal use.
+      #
+      # ${CMAKE_CURRENT_BINARY_DIR}/qwebdav_export.h
+      # qnaturalsort.h
+      qwebdav.h
+      qwebdav_global.h
+      qwebdavdirparser.h
+      qwebdavitem.h
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/QWebdav${QT_VERSION}
+    COMPONENT devel
+  )
+
 endfunction()
 
 if(WITH_QT5)
   add_qwebdav_library(5)
-  add_library(QWebdav ALIAS qwebdav-qt5)
 endif()
 if(WITH_QT6)
   add_qwebdav_library(6)
-  if(NOT TARGET QWebdav)
-    add_library(QWebdav ALIAS qwebdav-qt6)
-  endif()
 endif()
-
-# Only one export header, regardless of which libraries are built
-generate_export_header(QWebdav)
-
-# Only one copy of the headers, regardless of which libraries are built
-install(
-  FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/qwebdav_export.h
-    qnaturalsort.h
-    qwebdav.h
-    qwebdav_global.h
-    qwebdavdirparser.h
-    qwebdavitem.h
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR}/QWebdav
-  COMPONENT devel
-)
