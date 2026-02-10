@@ -51,14 +51,14 @@ endif()
 
 set(WITH_QT5 FALSE) # Used when creating the Config.cmake file
 set(WITH_QT6 FALSE)
-if(TARGET Qt5::Core)
+if(ENABLE_QT5 AND TARGET Qt5::Core)
   message(STATUS "Building Qt5 version of ${PROJECT_NAME}")
   set(WITH_QT5 TRUE)
 endif()
 if(ENABLE_QT5 AND NOT TARGET Qt5::Core)
   message(STATUS "Qt5 enabled but not found.")
 endif()
-if(TARGET Qt6::Core)
+if(ENABLE_QT6 AND TARGET Qt6::Core)
   message(STATUS "Building Qt6 version of ${PROJECT_NAME}")
   set(WITH_QT6 TRUE)
 endif()
@@ -75,6 +75,8 @@ if(NOT TARGET Qt5::Core AND NOT TARGET Qt6::Core)
       URL "https://qt.io/"
   )
 endif()
+
+feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 ### QWebdav version header is independent of build type
 #
