@@ -95,27 +95,6 @@ ecm_setup_version(${PROJECT_VERSION}
 add_subdirectory(qwebdavlib)
 add_subdirectory(qwebdavlibExample)
 
-### CMake Configuration Files
-#
-#
-configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/QWebdavConfig.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/QWebdavConfig.cmake"
-  INSTALL_DESTINATION ${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav
-)
-install(
-  FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/QWebdavConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/QWebdavConfigVersion.cmake"
-  DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav"
-  COMPONENT devel
-)
-install(
-  EXPORT QWebdavTargets
-  DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav"
-  FILE QWebdavTargets.cmake
-)
-
 ### PackageConfig files
 #
 # These are slightly different from the qmake-produced

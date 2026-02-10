@@ -47,7 +47,7 @@ function(add_qwebdav_library QT_VERSION)
 
   install(
     TARGETS qwebdav-qt${QT_VERSION}
-    EXPORT QWebdavTargets
+    EXPORT QWebdav${QT_VERSION}Targets
     ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
   )
 
@@ -75,6 +75,34 @@ function(add_qwebdav_library QT_VERSION)
       "${CMAKE_BINARY_DIR}/qwebdav_version.h"
     DESTINATION ${KDE_INSTALL_INCLUDEDIR}/QWebdav${QT_VERSION}
     COMPONENT devel
+  )
+
+  ### CMake Configuration Files
+  #
+  #
+  configure_package_config_file(
+    "${CMAKE_SOURCE_DIR}/QWebdavConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/QWebdav${QT_VERSION}Config.cmake"
+    INSTALL_DESTINATION ${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav${QT_VERSION}
+  )
+  install(
+    FILES
+      "${CMAKE_CURRENT_BINARY_DIR}/QWebdav${QT_VERSION}Config.cmake"
+    DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav${QT_VERSION}"
+    COMPONENT devel
+  )
+  install(
+    FILES
+      "${CMAKE_BINARY_DIR}/QWebdavConfigVersion.cmake"
+    RENAME
+      "QWebdav${QT_VERSION}ConfigVersion.cmake"
+    DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav${QT_VERSION}"
+    COMPONENT devel
+  )
+  install(
+    EXPORT QWebdav${QT_VERSION}Targets
+    DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/QWebdav${QT_VERSION}"
+    FILE QWebdav${QT_VERSION}Targets.cmake
   )
 endfunction()
 
