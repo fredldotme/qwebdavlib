@@ -80,18 +80,13 @@ feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKA
 
 ### QWebdav version header is independent of build type
 #
-#
+# Generate one copy in the top-level, this is installed to
+# multiple locations (per-Qt-version)
 ecm_setup_version(${PROJECT_VERSION}
   VARIABLE_PREFIX QWebdav
-  VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/qwebdav_version.h"
-  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/QWebdavConfigVersion.cmake"
+  VERSION_HEADER "${CMAKE_BINARY_DIR}/qwebdav_version.h"
+  PACKAGE_VERSION_FILE "${CMAKE_BINARY_DIR}/QWebdavConfigVersion.cmake"
   SOVERSION 1
-)
-install(
-  FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/qwebdav_version.h"
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QWebdav
-  COMPONENT devel
 )
 
 ### Build

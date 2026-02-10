@@ -70,7 +70,12 @@ function(add_qwebdav_library QT_VERSION)
     DESTINATION ${KDE_INSTALL_INCLUDEDIR}/QWebdav${QT_VERSION}
     COMPONENT devel
   )
-
+  install(
+    FILES
+      "${CMAKE_BINARY_DIR}/qwebdav_version.h"
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/QWebdav${QT_VERSION}
+    COMPONENT devel
+  )
 endfunction()
 
 if(WITH_QT5)
