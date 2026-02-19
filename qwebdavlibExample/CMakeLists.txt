@@ -35,6 +35,11 @@ if(NOT TARGET QWebdav)
   if(NOT TARGET Qt5::Core AND NOT TARGET Qt6::Core)
     message(FATAL_ERROR "No installed Qt version found.")
   endif()
+  if(TARGET Qt6::Core)
+    set(QT_VERSION 6)
+  else()
+    set(QT_VERSION 5)
+  endif()
 
   find_package(PkgConfig)
   if(PkgConfig_FOUND)
@@ -46,7 +51,7 @@ if(NOT TARGET QWebdav)
     endif()
   endif()
 
-  find_package(QWebdav 1.0) # Works with whatever Qt versions are installed
+  find_package(QWebdav${QT_VERSION} 1.0) # Works with whatever Qt versions are installed
 
   if(NOT TARGET QWebdav AND NOT TARGET PkgConfig::QWebdav)
     message(FATAL_ERROR "No installed QWebDAV found.")
