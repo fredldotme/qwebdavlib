@@ -56,6 +56,7 @@ function(add_qwebdav_library QT_VERSION)
   # One copy of the headers per Qt-version, even though they are
   # identical: this is so that you can build packages of Qt5 and Qt6
   # libraries separately and they won't collide over the headers.
+  set(_includedir ${KDE_INSTALL_INCLUDEDIR}/qt${QT_VERSION}/qwebdav-qt${QT_VERSION})
   install(
     FILES
       # Generated export-header isn't used (qwebdav_global contains similar
@@ -67,13 +68,13 @@ function(add_qwebdav_library QT_VERSION)
       qwebdav_global.h
       qwebdavdirparser.h
       qwebdavitem.h
-    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/QWebdav${QT_VERSION}
+    DESTINATION ${_includedir}
     COMPONENT devel
   )
   install(
     FILES
       "${CMAKE_BINARY_DIR}/qwebdav_version.h"
-    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/QWebdav${QT_VERSION}
+    DESTINATION ${_includedir}
     COMPONENT devel
   )
 
