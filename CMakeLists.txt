@@ -63,7 +63,7 @@ if(ENABLE_QT6 AND TARGET Qt6::Core)
   set(WITH_QT6 TRUE)
 endif()
 if(ENABLE_QT6 AND NOT TARGET Qt6::Core)
-  message(STATUS "Qt5 enabled but not found.")
+  message(STATUS "Qt6 enabled but not found.")
 endif()
 if(NOT TARGET Qt5::Core AND NOT TARGET Qt6::Core)
   # If neither is found, complain about Qt5 because then the
